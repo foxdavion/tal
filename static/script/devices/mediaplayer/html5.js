@@ -349,7 +349,7 @@ define(
                             start: this._mediaElement.seekable.start(0),
                             end: this._mediaElement.seekable.end(0)
                         };
-                    } else if (this._mediaElement.duration !== undefined) {
+                    } else if (this._mediaElement.duration !== undefined || (this._mediaElement.seekable.start(0) === 0 && this._mediaElement.seekable.end(0) === 0)) {
                         return {
                             start: 0,
                             end: this._mediaElement.duration
@@ -466,7 +466,7 @@ define(
                 var clampedTime = this._getClampedTime(seconds);
                 if (clampedTime !== seconds) {
                     var range = this._getSeekableRange();
-                    RuntimeContext.getDevice().getLogger().debug('playFrom ' + seconds + ' clamped to ' + clampedTime + ' - seekable range is { start: ' + range.start + ', end: ' + range.end + ' }');
+                    RuntimeContext.getDevice().getLogger().debug('playFrom ' + seconds + ' clamped to ' + clampedTime + ' - seekable range is { start: ' + range.start + ', end: ' + range.end + ' }, duration: ' + this._mediaElement.duration);
                 }
                 return clampedTime;
             },
