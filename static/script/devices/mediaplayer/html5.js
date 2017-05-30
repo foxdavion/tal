@@ -344,12 +344,12 @@ define(
 
             _getSeekableRange: function() {
                 if (this._mediaElement) {
-                    if (this._isReadyToPlayFrom() && this._mediaElement.seekable && this._mediaElement.seekable.length > 0) {
+                    if (this._isReadyToPlayFrom() && this._mediaElement.seekable && this._mediaElement.seekable.length > 0 && !(this._mediaElement.seekable.start(0) === 0 && this._mediaElement.seekable.end(0) === 0)) {
                         return {
                             start: this._mediaElement.seekable.start(0),
                             end: this._mediaElement.seekable.end(0)
                         };
-                    } else if (this._mediaElement.duration !== undefined || (this._mediaElement.seekable.start(0) === 0 && this._mediaElement.seekable.end(0) === 0)) {
+                    } else if (this._mediaElement.duration !== undefined) {
                         return {
                             start: 0,
                             end: this._mediaElement.duration
