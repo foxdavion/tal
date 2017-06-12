@@ -46,6 +46,7 @@ define(
                     PRESENTING: 2,
                     STOPPED: 3
                 };
+                this._stopQueued = false;
 
                 this.playState = this._playStates.UNREALIZED;
 
@@ -61,6 +62,11 @@ define(
                         RuntimeContext.getCurrentApplication().broadcastEvent(new TunerUnavailableEvent());
 
                     } else if (newPlayState === self._playStates.PRESENTING) {
+                      //check if a stop is pending and apply it
+                      if(this._stopQueued){
+                        this._broadcastVideoObject.stop();
+                        this._stopQueued = false;
+                      }
                         RuntimeContext.getCurrentApplication().broadcastEvent(new TunerPresentingEvent(self.getCurrentChannelName()));
 
                     } else if (newPlayState === self._playStates.STOPPED) {
@@ -87,8 +93,14 @@ define(
                 } catch(e) {
                     throw new Error('Unable to bind to current channel');
                 }
+                //check if the playstate is PRESENTING, and stop if it is, otherwise queue up a stop for when it is
+                if(this._broadcastVideoObject.playState === this._playStates.PRESENTING) {
+                  this._broadcastVideoObject.stop();
+                }
+                else {
+                  this._stopQueued = true;
+                }
 
-                this._broadcastVideoObject.stop();
                 this._broadcastVideoObject.style.visibility = 'hidden';
                 this.setPosition(0, 0, 0, 0);
             },
