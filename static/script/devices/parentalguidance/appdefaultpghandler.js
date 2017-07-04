@@ -12,42 +12,45 @@ define(
     function (Device, BasePgHandler) {
         'use strict';
 
-        var appDefaultPgHandler = BasePgHandler.extend({
+        return function () {
+            BasePgHandler = BasePgHandler();
 
-            isChallengeActive: function() {
-                if (this._appHandler) {
-                    return this._appHandler.isChallengeActive();
-                } else {
-                    throw new Error('No default parental guidance handler is registered');
+            var appDefaultPgHandler = BasePgHandler.extend({
+
+                isChallengeActive: function() {
+                    if (this._appHandler) {
+                        return this._appHandler.isChallengeActive();
+                    } else {
+                        throw new Error('No default parental guidance handler is registered');
+                    }
+                },
+                showChallenge: function(message, guidanceChallengeResponseCallBack) {
+                    if (!this._appHandler) {
+                        throw new Error('No default parental guidance handler is registered');
+                    } else if (typeof(guidanceChallengeResponseCallBack.onGuidanceChallengeResponse) !== 'function') {
+                        throw new Error('The guidanceChallengeResponseCallback object should contain an onGuidanceChallengeResponse' +
+                                        'function. The appHandler should call this function with a value from pgchallengeresponse.js as the first parameter');
+                    } else {
+                        return this._appHandler.showChallenge(message, guidanceChallengeResponseCallBack);
+                    }
+                },
+                supportsMessage: function() {
+                    return true;
+                },
+                isConfigurable: function() {
+                    return true;
                 }
-            },
-            showChallenge: function(message, guidanceChallengeResponseCallBack) {
-                if (!this._appHandler) {
-                    throw new Error('No default parental guidance handler is registered');
-                } else if (typeof(guidanceChallengeResponseCallBack.onGuidanceChallengeResponse) !== 'function') {
-                    throw new Error('The guidanceChallengeResponseCallback object should contain an onGuidanceChallengeResponse' +
-                                    'function. The appHandler should call this function with a value from pgchallengeresponse.js as the first parameter');
-                } else {
-                    return this._appHandler.showChallenge(message, guidanceChallengeResponseCallBack);
-                }
-            },
-            supportsMessage: function() {
-                return true;
-            },
-            isConfigurable: function() {
-                return true;
-            }
-        });
+            });
 
-        Device.prototype.parentalGuidanceHelper = new appDefaultPgHandler;
+            Device.prototype.parentalGuidanceHelper = new appDefaultPgHandler;
 
-        /**
-         *
-         * @param {object} containing implementation of showChallenge() and isChallengeActive()
-         */
-        Device.prototype.registerAppPgHandler = function(appHandler) {
-            this.parentalGuidanceHelper._appHandler = appHandler;
+            /**
+             *
+             * @param {object} containing implementation of showChallenge() and isChallengeActive()
+             */
+            Device.prototype.registerAppPgHandler = function(appHandler) {
+                this.parentalGuidanceHelper._appHandler = appHandler;
+            };
         };
-
     }
 );

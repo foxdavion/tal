@@ -12,8 +12,10 @@ define(
     function (SeekFinishedEmitEvent, HTML5) {
         'use strict';
 
-        SeekFinishedEmitEvent(HTML5);
+        return function () {
+            SeekFinishedEmitEvent(HTML5);
 
-        return HTML5;
+            return HTML5;    
+        };
     }
 );

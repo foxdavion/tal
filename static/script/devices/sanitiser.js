@@ -4,17 +4,18 @@
  * @license See https://github.com/fmtvp/tal/blob/master/LICENSE for full licence
  */
 
-define('antie/devices/sanitiser', [], function () {
-
+define('antie/devices/sanitiser', function () {
     'use strict';
 
-    function Sanitiser (string) {
-        this._string = string;
-    }
+    return function () {
+        function Sanitiser (string) {
+            this._string = string;
+        }
 
-    Sanitiser.prototype.setElementContent = function (el, enableHTML) {
-        el[enableHTML? 'innerHTML' : 'textContent'] = this._string;
+        Sanitiser.prototype.setElementContent = function (el, enableHTML) {
+            el[enableHTML? 'innerHTML' : 'textContent'] = this._string;
+        };
+
+        return Sanitiser;
     };
-
-    return Sanitiser;
 });

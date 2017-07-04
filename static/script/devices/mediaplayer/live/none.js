@@ -14,12 +14,14 @@ define(
     function (Device, MediaPlayer) {
         'use strict';
 
-        Device.prototype.getLivePlayer = function () {
-            return null;
-        };
+        return function () {
+            Device.prototype.getLivePlayer = function () {
+                return null;
+            };
 
-        Device.prototype.getLiveSupport = function () {
-            return MediaPlayer.LIVE_SUPPORT.NONE;
+            Device.prototype.getLiveSupport = function () {
+                return MediaPlayer.LIVE_SUPPORT.NONE;
+            };    
         };
     }
 );

@@ -11,13 +11,14 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by returning to the widget page using the tivo function.
-         */
-        Device.prototype.exit = function() {
-            /* global tivo: true */
-            tivo.core.exit();
+        return function () {
+            /**
+             * Exits the application by returning to the widget page using the tivo function.
+             */
+            Device.prototype.exit = function() {
+                /* global tivo: true */
+                tivo.core.exit();
+            };
         };
-
     }
 );

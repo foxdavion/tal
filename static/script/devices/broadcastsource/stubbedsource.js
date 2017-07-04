@@ -11,59 +11,61 @@ define('antie/devices/broadcastsource/stubbedsource',
     function (Device, BaseTvSource) {
         'use strict';
 
-        /**
-         * Contains a stubbed implementation of the antie broadcast TV source.
-         * @class
-         * @name antie.devices.broadcastsource.StubbedSource
-         * @extends antie.devices.broadcastsource.BaseTVSource
-         */
-
-        var StubbedSource = BaseTvSource.extend(/** @lends antie.devices.broadcastsource.StubbedSource.prototype */ {
+        return function () {
             /**
-             * @constructor
-             * @ignore
+             * Contains a stubbed implementation of the antie broadcast TV source.
+             * @class
+             * @name antie.devices.broadcastsource.StubbedSource
+             * @extends antie.devices.broadcastsource.BaseTVSource
              */
-            init: function () {},
-            showCurrentChannel: function () {},
-            stopCurrentChannel: function () {},
-            getCurrentChannelName: function () {
-                return 'BBC ONE N West';
-            },
-            getChannelNameList : function () {
-                return [
-                    { 'name' : 'Catal Test' },
-                    { 'name' : 'BBC ONE N West' },
-                    { 'name' : 'BBC TWO' },
-                    { 'name' : 'INVALID'}
-                ];
-            },
 
-            setChannelByName : function() {},
-            setPosition : function() {},
-            getState : function() {
-                return BaseTvSource.STATE.PRESENTING;
-            },
-            destroy : function() {}
-        });
+            var StubbedSource = BaseTvSource.extend(/** @lends antie.devices.broadcastsource.StubbedSource.prototype */ {
+                /**
+                 * @constructor
+                 * @ignore
+                 */
+                init: function () {},
+                showCurrentChannel: function () {},
+                stopCurrentChannel: function () {},
+                getCurrentChannelName: function () {
+                    return 'BBC ONE N West';
+                },
+                getChannelNameList : function () {
+                    return [
+                        { 'name' : 'Catal Test' },
+                        { 'name' : 'BBC ONE N West' },
+                        { 'name' : 'BBC TWO' },
+                        { 'name' : 'INVALID'}
+                    ];
+                },
 
-        Device.prototype.isBroadcastSourceSupported = function() {
-            return true;
+                setChannelByName : function() {},
+                setPosition : function() {},
+                getState : function() {
+                    return BaseTvSource.STATE.PRESENTING;
+                },
+                destroy : function() {}
+            });
+
+            Device.prototype.isBroadcastSourceSupported = function() {
+                return true;
+            };
+
+            /**
+             * Create a broadcastSource object on the Device to be
+             * accessed as a singleton to avoid the init being run
+             * multiple times
+             */
+            Device.prototype.createBroadcastSource = function() {
+                if(!this._broadcastSource) {
+                    this._broadcastSource = new StubbedSource();
+                }
+
+                return this._broadcastSource;
+            };
+
+            // Return the StubbedSource object for testing purposes
+            return StubbedSource;    
         };
-
-        /**
-         * Create a broadcastSource object on the Device to be
-         * accessed as a singleton to avoid the init being run
-         * multiple times
-         */
-        Device.prototype.createBroadcastSource = function() {
-            if(!this._broadcastSource) {
-                this._broadcastSource = new StubbedSource();
-            }
-
-            return this._broadcastSource;
-        };
-
-        // Return the StubbedSource object for testing purposes
-        return StubbedSource;
     }
 );

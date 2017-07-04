@@ -14,16 +14,18 @@ define(
     function( Module, Device ) {
         'use strict';
 
-        function ignore() {}
+        return function () {
+            function ignore() {}
 
-        var loggingMethods = {
-            log: ignore,
-            debug: ignore,
-            info: ignore,
-            warn: ignore,
-            error: ignore
+            var loggingMethods = {
+                log: ignore,
+                debug: ignore,
+                info: ignore,
+                warn: ignore,
+                error: ignore
+            };
+
+            Device.addLoggingStrategy(Module.id, loggingMethods);    
         };
-
-        Device.addLoggingStrategy(Module.id, loggingMethods);
     }
 );

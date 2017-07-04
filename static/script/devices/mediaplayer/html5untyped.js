@@ -15,37 +15,39 @@ define(
     function(RuntimeContext, Device, HTML5MediaPlayer) {
         'use strict';
 
-        /**
-         * Main MediaPlayer implementation for HTML5 devices specifies a 'type'
-         * attribute in the source element.
-         * This device modifier implements a new version of the function to
-         * generate the source element without setting a type attribute.
-         * @name antie.devices.mediaplayer.HTML5Untyped
-         * @class
-         * @extends antie.devices.mediaplayer.HTML5
-         */
-        var Player = HTML5MediaPlayer.extend( /** @lends antie.devices.mediaplayer.HTML5Untyped.prototype */ {
-            init: function() {
-                this._super();
-            },
+        return function () {
+            /**
+             * Main MediaPlayer implementation for HTML5 devices specifies a 'type'
+             * attribute in the source element.
+             * This device modifier implements a new version of the function to
+             * generate the source element without setting a type attribute.
+             * @name antie.devices.mediaplayer.HTML5Untyped
+             * @class
+             * @extends antie.devices.mediaplayer.HTML5
+             */
+            var Player = HTML5MediaPlayer.extend( /** @lends antie.devices.mediaplayer.HTML5Untyped.prototype */ {
+                init: function() {
+                    this._super();
+                },
 
-            _generateSourceElement: function(url) {
-                var device = RuntimeContext.getDevice();
-                var sourceElement = device._createElement('source');
-                sourceElement.src = url;
-                return sourceElement;
-            }
-        });
+                _generateSourceElement: function(url) {
+                    var device = RuntimeContext.getDevice();
+                    var sourceElement = device._createElement('source');
+                    sourceElement.src = url;
+                    return sourceElement;
+                }
+            });
 
-        var instance = new Player();
+            var instance = new Player();
 
-        // Mixin this MediaPlayer implementation, so that
-        // device.getMediaPlayer() returns the correct implementation for the
-        // device
-        Device.prototype.getMediaPlayer = function() {
-            return instance;
+            // Mixin this MediaPlayer implementation, so that
+            // device.getMediaPlayer() returns the correct implementation for the
+            // device
+            Device.prototype.getMediaPlayer = function() {
+                return instance;
+            };
+
+            return Player;    
         };
-
-        return Player;
     }
 );

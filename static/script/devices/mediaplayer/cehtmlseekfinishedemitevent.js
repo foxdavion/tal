@@ -13,8 +13,10 @@ define(
     function (SeekFinishedEmitEvent, CEHTML) {
         'use strict';
 
-        SeekFinishedEmitEvent(CEHTML);
+        return function () {
+            SeekFinishedEmitEvent(CEHTML);
 
-        return CEHTML;
+            return CEHTML;
+        };
     }
 );

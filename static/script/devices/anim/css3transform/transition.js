@@ -7,29 +7,31 @@ define(
     function (Helpers, EasingLookup) {
         'use strict';
 
-        var easingLookup = new EasingLookup();
+        return function () {
+            var easingLookup = new EasingLookup();
 
-        function getEasing(options) {
-            var easing = options.easing || 'easeFromTo';
-            return easingLookup[easing];
-        }
+            function getEasing(options) {
+                var easing = options.easing || 'easeFromTo';
+                return easingLookup[easing];
+            }
 
-        function set (el, properties, options) {
-            var duration = (options.duration || 840) + 'ms ';
-            var easing = getEasing(options);
-            var transitions = properties.map(function (property) {
-                return property + ' ' + duration + easing;
-            }).join(',');
-            Helpers.setStyle(el, 'transition', transitions, true);
-        }
+            function set (el, properties, options) {
+                var duration = (options.duration || 840) + 'ms ';
+                var easing = getEasing(options);
+                var transitions = properties.map(function (property) {
+                    return property + ' ' + duration + easing;
+                }).join(',');
+                Helpers.setStyle(el, 'transition', transitions, true);
+            }
 
-        function clear (el) {
-            Helpers.setStyle(el, 'transition', '', true);
-        }
+            function clear (el) {
+                Helpers.setStyle(el, 'transition', '', true);
+            }
 
-        return {
-            set: set,
-            clear: clear
+            return {
+                set: set,
+                clear: clear
+            };    
         };
     }
 );

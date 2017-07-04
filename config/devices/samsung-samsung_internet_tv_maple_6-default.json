@@ -4,9 +4,8 @@
 		"base": "antie/devices/browserdevice",
 		"modifiers": [
 			"antie/devices/anim/styletopleft",
-      "antie/devices/mediaplayer/samsung_maple",
-      "antie/devices/mediaplayer/live/playable",
-			"antie/devices/data/json2",
+			"antie/devices/mediaplayer/samsung_maple",
+			"antie/devices/mediaplayer/live/playable",
 			"antie/devices/storage/cookie",
 			"antie/devices/logging/onscreen",
 			"antie/devices/logging/xhr",

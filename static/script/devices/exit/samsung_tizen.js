@@ -12,13 +12,15 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by invoking exit() on the current application.
-         */
-        Device.prototype.exit = function() {
-            // From http://www.samsungdforum.com/tizenapiguide/
-            /* global tizen: true */
-            tizen.application.getCurrentApplication().exit();
+        return function () {
+            /**
+             * Exits the application by invoking exit() on the current application.
+             */
+            Device.prototype.exit = function() {
+                // From http://www.samsungdforum.com/tizenapiguide/
+                /* global tizen: true */
+                tizen.application.getCurrentApplication().exit();
+            };    
         };
     }
 );

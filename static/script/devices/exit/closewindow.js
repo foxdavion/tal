@@ -10,12 +10,13 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by invoking the window.close method
-        */
-        Device.prototype.exit = function() {
-            window.close();
+        return function () {
+            /**
+             * Exits the application by invoking the window.close method
+            */
+            Device.prototype.exit = function() {
+                window.close();
+            };    
         };
-
     }
 );

@@ -11,29 +11,32 @@ define(
     ],
     function(TransitionDefinition) {
         'use strict';
-        return TransitionDefinition.extend(
-            {
-                /*
-                 * Transition definition from options.
-                 * @param animation options object
-                 * @param config animation configuration object
-                 */
-                init: function(options, config) {
-                    var property, timeEasing;
-                    config = config || {};
-                    this._super();
-                    for(property in options.to) {
-                        if(options.to.hasOwnProperty(property)) {
-                            timeEasing = options.easing || config.easing;
-                            this.setProperty(property, {
-                                duration: options.duration || config.duration,
-                                delay: options.delay,
-                                timingFn: timeEasing ? TransitionDefinition.easingLookup[timeEasing] : undefined
-                            });
+
+        return function () {
+            return TransitionDefinition.extend(
+                {
+                    /*
+                     * Transition definition from options.
+                     * @param animation options object
+                     * @param config animation configuration object
+                     */
+                    init: function(options, config) {
+                        var property, timeEasing;
+                        config = config || {};
+                        this._super();
+                        for(property in options.to) {
+                            if(options.to.hasOwnProperty(property)) {
+                                timeEasing = options.easing || config.easing;
+                                this.setProperty(property, {
+                                    duration: options.duration || config.duration,
+                                    delay: options.delay,
+                                    timingFn: timeEasing ? TransitionDefinition.easingLookup[timeEasing] : undefined
+                                });
+                            }
                         }
                     }
                 }
-            }
-        );
+            );
+        };
     }
 );

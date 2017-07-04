@@ -10,12 +10,13 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by returning to the widget page using the NetcastBack function.
-         */
-        Device.prototype.exit = function() {
-            window.NetCastBack();
+        return function () {
+            /**
+             * Exits the application by returning to the widget page using the NetcastBack function.
+             */
+            Device.prototype.exit = function() {
+                window.NetCastBack();
+            };    
         };
-
     }
 );

@@ -11,35 +11,36 @@ define(
     ],
     function(TransitionDefinition) {
         'use strict';
-        return TransitionDefinition.extend(
-            {
-                init: function (transDef) {
-                    this._super();
-                    this._copyToSelf(transDef);
-                },
-                
-                _copyToSelf: function(transDef) {
-                    var props, property, i;
-                    props = transDef.getProperties();
-                    for(i = 0; i !== props.length; i += 1) {
-                        property = props[i];
-                        this.setProperty(
-                            property, 
-                            {
-                                duration: transDef.getPropertyDuration(property),
-                                delay: transDef.getPropertyDelay(property),
-                                timingFn: transDef.getPropertyTimingFn(property)
-                            }
-                        );
+
+        return function () {
+            return TransitionDefinition.extend(
+                {
+                    init: function (transDef) {
+                        this._super();
+                        this._copyToSelf(transDef);
+                    },
+
+                    _copyToSelf: function(transDef) {
+                        var props, property, i;
+                        props = transDef.getProperties();
+                        for(i = 0; i !== props.length; i += 1) {
+                            property = props[i];
+                            this.setProperty(
+                                property,
+                                {
+                                    duration: transDef.getPropertyDuration(property),
+                                    delay: transDef.getPropertyDelay(property),
+                                    timingFn: transDef.getPropertyTimingFn(property)
+                                }
+                            );
+                        }
+                    },
+
+                    getPropertyDuration: function () {
+                        return 0;
                     }
-                },
-                
-                getPropertyDuration: function () {
-                    return 0;
                 }
-            }
-            
-            
-        );
+            );
+        };
     }
 );

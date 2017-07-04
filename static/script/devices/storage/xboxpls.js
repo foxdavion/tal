@@ -12,52 +12,54 @@ define(
     function(Device, StorageProvider) {
         'use strict';
 
-        var namespaces = {};
+        return function () {
+            var namespaces = {};
 
-        var XboxStorage = StorageProvider.extend({
-            init: function() {
-                /* global Windows: true */
-                this._storage = Windows.Storage.ApplicationData.current.localSettings.values;
+            var XboxStorage = StorageProvider.extend({
+                init: function() {
+                    /* global Windows: true */
+                    this._storage = Windows.Storage.ApplicationData.current.localSettings.values;
 
-            },
+                },
 
-            getItem: function (key) {
-                if (this._storage.hasKey(key)) {
-                    var value = this._storage.lookup(key);
-                    var jsonifiedValue = Device.prototype.decodeJson(value);
+                getItem: function (key) {
+                    if (this._storage.hasKey(key)) {
+                        var value = this._storage.lookup(key);
+                        var jsonifiedValue = Device.prototype.decodeJson(value);
 
-                    if (jsonifiedValue === null) {
-                        return undefined;
+                        if (jsonifiedValue === null) {
+                            return undefined;
+                        }
+
+                        return jsonifiedValue;
                     }
+                    return undefined;
+                },
 
-                    return jsonifiedValue;
+                setItem: function (key, value) {
+                    var stringifiedValue = Device.prototype.encodeJson(value);
+                    this._storage.insert(key, stringifiedValue);
+                },
+
+                removeItem: function(key) {
+                    this._storage.insert(key, null);
+                },
+
+                clear: function() {
+                    this._storage.clear();
+                },
+
+                isEmpty: function() {
+                    return this._storage.Size === 0;
                 }
-                return undefined;
-            },
+            });
 
-            setItem: function (key, value) {
-                var stringifiedValue = Device.prototype.encodeJson(value);
-                this._storage.insert(key, stringifiedValue);
-            },
-
-            removeItem: function(key) {
-                this._storage.insert(key, null);
-            },
-
-            clear: function() {
-                this._storage.clear();
-            },
-
-            isEmpty: function() {
-                return this._storage.Size === 0;
-            }
-        });
-
-        Device.prototype.getPersistentStorage = function(namespace) {
-            if(!namespaces[namespace]) {
-                namespaces[namespace] = new XboxStorage(namespace);
-            }
-            return namespaces[namespace];
+            Device.prototype.getPersistentStorage = function(namespace) {
+                if(!namespaces[namespace]) {
+                    namespaces[namespace] = new XboxStorage(namespace);
+                }
+                return namespaces[namespace];
+            };    
         };
     }
 );

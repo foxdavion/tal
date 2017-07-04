@@ -11,64 +11,67 @@ define(
     ],
     function(Class) {
         'use strict';
-        return Class.extend(
-            {
-                stripWhiteSpace: function(str) {
-                    return str.replace(/(^\s+|\s+$)/g,'');
-                },
 
-                csvAppend: function(existing, additional) {
-                    var retStr;
-                    if (existing === '') {
-                        retStr = additional;
-                    } else {
-                        retStr = existing + ',' + additional;
-                    }
-                    return retStr;
-                },
+        return function () {
+            return Class.extend(
+                {
+                    stripWhiteSpace: function(str) {
+                        return str.replace(/(^\s+|\s+$)/g,'');
+                    },
 
-                buildCsvString: function(arr) {
-                    var i, csvString;
-                    csvString = '';
-                    for (i = 0; i !== arr.length; i += 1) {
-                        csvString = this.csvAppend(csvString, arr[i]);
-                    }
-                    return csvString;
-                },
-
-                splitStringOnNonParenthesisedCommas: function(inString) {
-                    var parenthCount, i, tokens, currentSegment, currentChar;
-                    tokens = [];
-                    parenthCount = 0;
-                    currentSegment = '';
-                    for(i = 0; i !== inString.length; i += 1) {
-                        currentChar = inString.charAt(i);
-                        if(currentChar === '(') {
-                            parenthCount += 1;
-                        }
-                        if(currentChar === ')') {
-                            parenthCount -= 1;
-                        }
-                        if((parenthCount === 0 && currentChar === ',')) {
-                            currentSegment = this.stripWhiteSpace(currentSegment);
-                            if(currentSegment !== '') {
-                                tokens.push(currentSegment);
-                            }
-                            currentSegment = '';
+                    csvAppend: function(existing, additional) {
+                        var retStr;
+                        if (existing === '') {
+                            retStr = additional;
                         } else {
-                            currentSegment += currentChar;
+                            retStr = existing + ',' + additional;
                         }
+                        return retStr;
+                    },
+
+                    buildCsvString: function(arr) {
+                        var i, csvString;
+                        csvString = '';
+                        for (i = 0; i !== arr.length; i += 1) {
+                            csvString = this.csvAppend(csvString, arr[i]);
+                        }
+                        return csvString;
+                    },
+
+                    splitStringOnNonParenthesisedCommas: function(inString) {
+                        var parenthCount, i, tokens, currentSegment, currentChar;
+                        tokens = [];
+                        parenthCount = 0;
+                        currentSegment = '';
+                        for(i = 0; i !== inString.length; i += 1) {
+                            currentChar = inString.charAt(i);
+                            if(currentChar === '(') {
+                                parenthCount += 1;
+                            }
+                            if(currentChar === ')') {
+                                parenthCount -= 1;
+                            }
+                            if((parenthCount === 0 && currentChar === ',')) {
+                                currentSegment = this.stripWhiteSpace(currentSegment);
+                                if(currentSegment !== '') {
+                                    tokens.push(currentSegment);
+                                }
+                                currentSegment = '';
+                            } else {
+                                currentSegment += currentChar;
+                            }
+                        }
+
+                        currentSegment = this.stripWhiteSpace(currentSegment);
+                        if(currentSegment !== '') {
+                            tokens.push(currentSegment);
+                        }
+
+                        return tokens;
+
                     }
-
-                    currentSegment = this.stripWhiteSpace(currentSegment);
-                    if(currentSegment !== '') {
-                        tokens.push(currentSegment);
-                    }
-
-                    return tokens;
-
                 }
-            }
-        );
+            );
+        };
     }
 );

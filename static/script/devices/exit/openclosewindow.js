@@ -12,16 +12,18 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by invoking window.open() on the current window,
-         * then window.close().
-         */
-        Device.prototype.exit = function() {
-            // Workaround to make the browser think this window was opened via script
-            window.open('', '_self');
+        return function () {
+            /**
+             * Exits the application by invoking window.open() on the current window,
+             * then window.close().
+             */
+            Device.prototype.exit = function() {
+                // Workaround to make the browser think this window was opened via script
+                window.open('', '_self');
 
-            // Close the current window
-            window.close();
+                // Close the current window
+                window.close();
+            };    
         };
     }
 );

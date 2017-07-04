@@ -1002,9 +1002,18 @@ define(
          * @param {Object} callbacks Object containing onSuccess and onError callback functions.
          */
         Device.load = function(config, callbacks) {
+            var self = this;
+
             try {
-                require([config.modules.base].concat(config.modules.modifiers), function(DeviceClass) {
+                require([config.modules.base].concat(config.modules.modifiers), function() {
+                    var args = Array.prototype.slice.call(arguments);
+
+                    args.slice(1).forEach(function (modifier) {
+                        modifier.call(self);
+                    });
+
                     try {
+                        var DeviceClass = args[0]();
                         callbacks.onSuccess(new DeviceClass(config));
                     } catch(ex) {
                         if (callbacks.onError) {

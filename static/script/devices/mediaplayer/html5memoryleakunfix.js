@@ -13,8 +13,10 @@ define(
     function(HTML5MediaPlayer) {
         'use strict';
 
-        HTML5MediaPlayer.prototype._unloadMediaSrc = function(){};
+        return function () {
+            HTML5MediaPlayer.prototype._unloadMediaSrc = function(){};
 
-        return HTML5MediaPlayer;
+            return HTML5MediaPlayer;    
+        };
     }
 );

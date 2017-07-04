@@ -10,12 +10,13 @@ define(
     function(Device) {
         'use strict';
 
-        /**
-         * Exits the application by returning to broadcast using the NetcastExit function.
-         */
-        Device.prototype.exitToBroadcast = function() {
-            window.NetCastExit();
+        return function () {
+            /**
+             * Exits the application by returning to broadcast using the NetcastExit function.
+             */
+            Device.prototype.exitToBroadcast = function() {
+                window.NetCastExit();
+            };    
         };
-
     }
 );
