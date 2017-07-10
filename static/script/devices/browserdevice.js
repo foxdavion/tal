@@ -152,6 +152,20 @@ define(
                     return false;
                 }
 
+                // Skip if the requested stylesheet is already loaded
+                var styleSheets = document.styleSheets || [];
+                for (var i = 0; i < styleSheets.length; i++) {
+                    if (styleSheets[i].href === url) {
+                        if (callback) {
+                            setTimeout(function () {
+                                callback(url);
+                            }, 1);
+                        }
+
+                        return url;
+                    }
+                }
+
                 if (callback && supportsCssRules()) {
                     var style = this._createElement('style');
                     style.type = 'text/css';
