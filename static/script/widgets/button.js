@@ -37,7 +37,7 @@ define(
              */
             init: function init (id, animationEnabled) {
                 //TODO refactor this to set focusDelay explicitly rather than using animationEnabled with fixed focusDelay
-                this._super(id);
+                init.base.call(this, id);
                 this.addClass('button');
                 this.addClass('buttonBlurred');
 
@@ -148,7 +148,7 @@ define(
                 }
             },
             removeFocus: function removeFocus () {
-                this._super();
+                removeFocus.base.call(this);
                 this.removeClass('buttonFocussed');
                 this.addClass('buttonBlurred');
             }
