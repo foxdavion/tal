@@ -114,19 +114,30 @@ define(
              * @returns An image within the device's user-agent.
              */
             createImage: function(id, classNames, src, size, onLoad, onError) {
-                var el = this._createElement('img', id, classNames);
-                el.src = src;
-                el.alt = '';
+                var canvas = this._createElement('canvas', id, classNames);
+
+                var context = canvas.getContext('2d');
+                var image = new Image();
+
+                image.src = src;
+
                 if (size) {
-                    this.setElementSize(el, size);
+                    this.setElementSize(canvas, size);
                 }
-                if (onLoad !== undefined) {
-                    el.onload = onLoad;
-                }
+
+                image.onload = function(e) {
+                    context.drawImage(image, 0, 0);
+
+                    if (onLoad !== undefined) {
+                        onLoad(e);
+                    }
+                };
+
                 if (onError !== undefined) {
-                    el.onerror = onError;
+                    image.onerror = onError;
                 }
-                return el;
+
+                return canvas;
             },
             /**
              * Loads an external style sheet.
